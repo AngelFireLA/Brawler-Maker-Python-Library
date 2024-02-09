@@ -1,0 +1,3 @@
+include README.md
+recursive-include brawl_stars_brawler_maker/csv_logic *
+recursive-include brawl_stars_brawler_maker/localization *
