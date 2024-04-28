@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='brawl_stars_brawler_maker',
-    version='1.0.1',
+    version='1.0.2',
     author='AngelFire',
     description='A package to mod Brawl Stars game files for custom brawler creation.',
     include_package_data=True,
