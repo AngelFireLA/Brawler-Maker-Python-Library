@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='brawl_stars_brawler_maker',
-    version='1.0.2',
+    version='1.0.4',
     author='AngelFire',
     description='A package to mod Brawl Stars game files for custom brawler creation.',
     include_package_data=True,
@@ -15,7 +15,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.6',
+    python_requires='<3.11',
     install_requires=[
         'apk_signer',
         'mega.py',

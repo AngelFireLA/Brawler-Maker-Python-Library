@@ -180,7 +180,7 @@ class Brawler:
             if os.path.exists(os.path.join(current_folder, 'default_files/csv_logic')):
                 raise FileExistsError(
                     "A csv_logic folder already exists in this folder, please delete it or choose another folder")
-            shutil.copytree(os.path.join(current_folder, "default_files/csv_logic"), csv_logic_folder_path)
+            shutil.copytree(csv_logic_folder_path, os.path.join(current_folder, "default_files/csv_logic"))
             csv_logic_folder_path = os.path.join(current_folder, "default_files/csv_logic")
             if debug: print("successfully duplicated target csv_logic folder to current folder")
 
@@ -188,7 +188,7 @@ class Brawler:
             if os.path.exists(os.path.join(current_folder, 'default_files/localization')):
                 raise FileExistsError(
                     "A localization folder already exists in this folder, please delete it or choose another folder")
-            shutil.copytree(os.path.join(current_folder, "default_files/localization"), localization_folder_path)
+            shutil.copytree(localization_folder_path, os.path.join(current_folder, "default_files/localization"))
             localization_folder_path = os.path.join(current_folder, "default_files/localization")
             if debug: print("successfully duplicated target localization folder to current folder")
 
