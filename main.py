@@ -25,5 +25,5 @@ brawler = brawler_maker.Brawler(
     ulti_projectile="CactusUltiProjectile"
 )
 
-brawler.generate_files("my_files/csv_logic", "my_files/localization")
+brawler.generate_files()
 brawler.export_csv_logic_to_apk()

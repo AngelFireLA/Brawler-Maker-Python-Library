@@ -1,11 +1,12 @@
 import csv
 import os
 import random
-from zipfile import ZipFile
 import shutil
-import apk_signer
-from mega import Mega
+from zipfile import ZipFile
 
+import apk_signer
+
+from brawl_stars_brawler_maker.vendored.mega import Mega
 mega = Mega()
 
 brawler_names_list = ['shelly', 'colt', 'bull', 'brock', 'rico', 'spike', 'barley', 'jessie', 'nita', 'dynamike',
@@ -80,7 +81,8 @@ class Brawler:
                  attack_name, attack_description, ulti_name,
                  ulti_description, speed, hp, icon, range,
                  reloadtime, ammonumber,
-                 damage, spread, numberofprojectiles, projectile, ulti_projectile, ulti_damage, ulti_spread, ulti_numberofprojectiles, ulti_range):
+                 damage, spread, numberofprojectiles, projectile, ulti_projectile, ulti_damage, ulti_spread,
+                 ulti_numberofprojectiles, ulti_range):
         self.brawlername = brawlername
         self.capbrawlername = brawlername.upper()
         self.description = description
@@ -104,7 +106,6 @@ class Brawler:
         self.ulti_spread = ulti_spread
         self.ulti_numberofprojectiles = ulti_numberofprojectiles
         self.ulti_range = ulti_range
-
 
         try:
             if self.rarity not in rarity_list:
@@ -145,7 +146,8 @@ class Brawler:
             print(e)
             exit()
 
-    def generate_files(self, csv_logic_folder_path=None, localization_folder_path=None, directly_modify=False, warning=True, debug=True):
+    def generate_files(self, csv_logic_folder_path=None, localization_folder_path=None, directly_modify=False,
+                       warning=True, debug=True):
         """
         Modify the csv files to add the brawlers
         :param csv_logic_folder_path: the path for the csv_logic folder whose file you want to modify, will use BS V29's files if not specified
@@ -160,8 +162,8 @@ class Brawler:
 
         # Default paths within the package
         package_directory = os.path.dirname(os.path.abspath(__file__))  # Gets the directory where the script is located
-        default_csv_logic_path = os.path.join(package_directory, "default_files", "default_files/csv_logic")
-        default_localization_path = os.path.join(package_directory, "default_files", "default_files/localization")
+        default_csv_logic_path = os.path.join(package_directory, "default_files/csv_logic")
+        default_localization_path = os.path.join(package_directory, "default_files/localization")
 
         # Use default paths if none provided
         if csv_logic_folder_path is None:
@@ -176,22 +178,22 @@ class Brawler:
                 "Warning, this will modify directly your files, if you want to make a backup please stop this script, otherwise press enter to continue")
         else:
             current_folder = os.getcwd()
-            #duplicates csv_logic folder
+            # duplicates csv_logic folder
             if os.path.exists(os.path.join(current_folder, 'default_files/csv_logic')):
                 raise FileExistsError(
                     "A csv_logic folder already exists in this folder, please delete it or choose another folder")
+            print(csv_logic_folder_path)
             shutil.copytree(csv_logic_folder_path, os.path.join(current_folder, "default_files/csv_logic"))
             csv_logic_folder_path = os.path.join(current_folder, "default_files/csv_logic")
             if debug: print("successfully duplicated target csv_logic folder to current folder")
 
-            #duplicates localization folder
+            # duplicates localization folder
             if os.path.exists(os.path.join(current_folder, 'default_files/localization')):
                 raise FileExistsError(
                     "A localization folder already exists in this folder, please delete it or choose another folder")
             shutil.copytree(localization_folder_path, os.path.join(current_folder, "default_files/localization"))
             localization_folder_path = os.path.join(current_folder, "default_files/localization")
             if debug: print("successfully duplicated target localization folder to current folder")
-
 
         filename = os.path.join(localization_folder_path, 'texts.csv')
         with open(filename, 'a', newline="") as file:
@@ -315,7 +317,9 @@ class Brawler:
         print("Done generating the csv files !")
 
     @staticmethod
-    def export_csv_logic_to_apk(csv_logic_folder_path=None, localization_folder_path=None, destination_folder=None, apk_mega_link="https://mega.nz/file/cANAhBya#8wFHevhnng_a09IMWPet9BihJaJd3nLDHaEhGqgmIM4", existing_apk_path=None, sign=False, debug=True):
+    def export_csv_logic_to_apk(csv_logic_folder_path=None, localization_folder_path=None, destination_folder=None,
+                                apk_mega_link="https://mega.nz/file/cANAhBya#8wFHevhnng_a09IMWPet9BihJaJd3nLDHaEhGqgmIM4",
+                                existing_apk_path=None, sign=False, debug=True):
         """
         :param csv_logic_folder_path: the path of the csv_logic folder you want to make the apk from
         :param localization_folder_path: the path of the localization folder you want to make the apk from
@@ -347,7 +351,7 @@ class Brawler:
         if destination_folder is None:
             destination_folder = os.getcwd()
 
-        if not os.path.exists(destination_folder+f"/{apk_name}.apk") and existing_apk_path is None:
+        if not os.path.exists(destination_folder + f"/{apk_name}.apk") and existing_apk_path is None:
             try:
                 if debug: print("Starting to download APK")
                 mega.download_url(apk_mega_link, dest_filename=f"{apk_name}.apk",
@@ -358,7 +362,8 @@ class Brawler:
             if debug: print("Finish downloading APK")
         if debug: print("Copying APK into ZIP...")
         if existing_apk_path is None:
-            shutil.copy(os.path.join(destination_folder, apk_name + ".apk"), os.path.join(destination_folder, apk_name + ".zip"))
+            shutil.copy(os.path.join(destination_folder, apk_name + ".apk"),
+                        os.path.join(destination_folder, apk_name + ".zip"))
         else:
             shutil.copy(existing_apk_path, os.path.join(destination_folder, apk_name + ".zip"))
         if debug: print("Done copying APK into ZIP")
@@ -378,7 +383,8 @@ class Brawler:
         if debug: print("Copying CSV logic files...")
         try:
             for file in os.listdir(csv_logic_folder_path):
-                shutil.copy(os.path.join(csv_logic_folder_path, file), os.path.join(destination_folder, apk_name, "assets/csv_logic", file))
+                shutil.copy(os.path.join(csv_logic_folder_path, file),
+                            os.path.join(destination_folder, apk_name, "assets/csv_logic", file))
         except PermissionError:
             raise PermissionError("File Permission Error : couldn't transfer the csv files to the apk.")
 
@@ -403,6 +409,6 @@ class Brawler:
             apk_signer.sign_apk(os.path.join(destination_folder, apk_name + "-BrawlerMaker.apk"))
             if debug: print("Done signing apk")
             if debug: print("Deleting unsigned apk...")
-            os.remove(os.path.join(destination_folder, apk_name+"-BrawlerMaker.apk"))
+            os.remove(os.path.join(destination_folder, apk_name + "-BrawlerMaker.apk"))
             if debug: print("Done deleting unsigned apk")
         print("Done exporting csv logic to apk")
